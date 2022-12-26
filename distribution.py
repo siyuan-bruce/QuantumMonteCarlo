@@ -5,7 +5,7 @@ from qiskit_finance.circuit.library import UniformDistribution, LogNormalDistrib
 from typing import Tuple, Union, List, Optional, Any
 from .error import QMCError
 
-class Distributon:
+class Distribution:
     
     def __init__(
         self,

@@ -20,9 +20,13 @@ class QuantumWalk:
         num_steps: int,
         distribution: str,
         size: int,
+        qc: QuantumCircuit = None,
     ) -> None:
         
-        self.qc = QuantumCircuit()
+        if qc == None:
+            self.qc = QuantumCircuit()
+        else:
+            self.qc = qc
         self.num_steps = num_steps
         self.distribution = distribution
         self.size = size
@@ -30,21 +34,33 @@ class QuantumWalk:
         self.vars = []
         self.registers = []
     
-    def generateDist(
+    def generate_dist(
         self,
+        distribution: str = None,
+        size: int = None,
+        mu: Optional[float] = None,
+        sigma: Optional[float] = None,
+        bounds: Union[Tuple[float, float], List[Tuple[float, float]]] = None,
         name: str = "Quantum Walk",
     ) -> QuantumCircuit:
         
-        size = self.size
-        dist = self.distribution
+        if size == None:
+            size = self.size
+        else:
+            self.size = size
+
+        if distribution == None:
+            distribution = self.distribution
+        else:
+            self.distribution = distribution
         
         loc_start = 0
         
         for i in range(self.num_steps):
-#             print("i", i)
+
             step = Variable(self.size + i, name = name + " step " + str(i) )
             
-            step.loadDistribution(dist,self.size)
+            step.load_distribution(distribution, size, mu, sigma, bounds)
             
             register = step.get_register()
             self.qc.add_register(register)

@@ -25,7 +25,7 @@ class Variable:
         self.qc = QuantumCircuit(self.register)
         self.loaded = 0
         
-    def loadDistribution(
+    def load_distribution(
         self,
         distribution: str,
         size: int,
@@ -36,7 +36,7 @@ class Variable:
         if self.loaded ==1:
             raise QMCError("The data is already loaded.")
         
-        dist = Distributon(size)
+        dist = Distribution(size)
         if distribution == "Normal":
             self.qc = self.qc.compose(dist.Normal(mu, sigma, bounds = bounds), range(size))
         elif distribution == "Uniform":
@@ -48,7 +48,7 @@ class Variable:
         
         self.loaded = 1
             
-    def loadConstant(
+    def load_constant(
         self,
         constant: int,
     ) -> None:
@@ -60,7 +60,7 @@ class Variable:
         
         length = len(constant_b)
         
-        print(constant_b)
+        # print(constant_b)
         if length > self.num_qubits:
             raise QMCError("Cannot represent the number in a limited number of qubits.")
         

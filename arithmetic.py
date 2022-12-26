@@ -19,6 +19,7 @@ class Arithmetic:
             self.qc = QuantumCircuit()
         else:
             self.qc = qc
+
     
     def add(
         self,
@@ -37,8 +38,8 @@ class Arithmetic:
         width1 = qc1.width()
         width2 = qc2.width()
         
-#         print("width1: ", width1)
-#         print("width2: ", width2)
+        print("width1", width1)
+        print("width2", width2)
         
         if width1 < width2:
             a = var1.get_register()
@@ -49,6 +50,10 @@ class Arithmetic:
             
             try:
                 self.qc.add_register(a)
+            except:
+                pass
+
+            try:
                 self.qc.add_register(b)
             except:
                 pass
@@ -57,24 +62,33 @@ class Arithmetic:
             add(self.qc, a, b, width1)
             
         elif width1 == width2:
-            a = QuantumRegister(width1, name = name1)
+            a = var1.get_register()
             
             if pad == True:
-                b = QuantumRegister(width2+1,  name = name2)
+                b = QuantumRegister(width2+1,  name = name2 + "padded")
             else:
-                b = QuantumRegister(width2, name = name2)
+                b = var2.get_register()
                 
-            self.qc.add_register(a)
-            self.qc.add_register(b)
+            try:
+                self.qc.add_register(a)
+            except:
+                pass
 
-            
+            try:
+                self.qc.add_register(b)
+            except:
+                pass
+
             add(self.qc, a, b, width1)
             
         else:
             a = var1.get_register()
             if pad == True:
                 b = QuantumRegister(width1 + 1, name = name2 + "padded")
-                self.qc.add_register(b)
+                try:
+                    self.qc.add_register(b)
+                except:
+                    pass
                 add(self.qc, a, b, width2)
                 
             else:
@@ -100,25 +114,53 @@ class Arithmetic:
         
         a = QuantumRegister(width1, "var_a")
         b = QuantumRegister(width2, "square")
-        self.qc.add_register(a)
-        self.qc.add_register(b)
+        try:
+            self.qc.add_register(a)
+        except:
+            pass
+
+        try:
+            self.qc.add_register(b)
+        except:
+            pass
         self.qc = self.qc.compose(qc1, qubits = range(width1))
         self.qc = self.qc.compose(qc2, qubits = range(width1, width1  + width2))
 
         square(self.qc, a, b)
         
         return a, b 
-            
-#     def power(
-#         self,
-#         var1: Variable,
-#         var2: Variable,
-#         name: str = "Power",
-#               ) -> QuantumCircuit:
+
         
-#         dist = UniformDistribution(self.num_qubits, name = name)
+    def power2(
+        self,
+        var1: Variable,
+        name: str = "power2",
+              ) -> QuantumCircuit:
+        a = var1.get_register()
+        b_size = 2 ** a.size
+        b = QuantumRegister(b_size, "b")
+        try:
+            self.qc.add_register(a)
+            self.qc.add_register(b)
+        except:
+            pass
         
-#         return dist
+        qc.x(a[0])
+        qc.cx(a[0],b[0])
+        qc.x(a[0])
+
+        for i in range(a.size):
+            qc.cx(a[i],b[2**(i)])
+            for j in range(1,2**(i)):
+                qc.ccx(b[j], b[2**(i)], b[j + 2**(i)])
+                qc.cx(b[j + 2**(i)], b[j])
+                qc.cx(b[j + 2**(i)], b[2**(i)])
+
+
+        for i in range(1, b.size):
+            if i % 2 ==0:
+                qc.cx(b[i],b[0])
+
     
     def get_qc(self):
         return self.qc
