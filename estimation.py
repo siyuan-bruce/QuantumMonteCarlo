@@ -45,7 +45,7 @@ class QuantumEstimation:
             offsets = 0
             f_min = 0
             f_max = 1
-            c_approx = 0.25 #rescaling factor is important, need to explore which value is better
+            c_approx = 0.1 #rescaling factor is important, need to explore which value is better
             
             objective = LinearAmplitudeFunction(
                 num_uncertainty_qubits,
