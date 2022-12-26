@@ -1,6 +1,6 @@
 ### pad rules: we can make sure we only pad the second variable if neccessary. The second 
 from qiskit import *
-from QArithmetic import add, sub, sub_swap
+from QArithmetic import add, sub, sub_swap, cadd
 import numpy as np
 
 from qiskit.utils import QuantumInstance
@@ -32,19 +32,26 @@ class Arithmetic:
         qc1 = var1.get_qc()
         qc2 = var2.get_qc()
         
-        name1 = var1.get_register().name
-        name2 = var2.get_register().name
+
+        reg1 = var1.get_register()
+        reg2 = var2.get_register()
+
+        name1 = reg1.name
+        name2 = reg2.name
         
         width1 = qc1.width()
         width2 = qc2.width()
         
-        print("width1", width1)
-        print("width2", width2)
         
         if width1 < width2:
             a = var1.get_register()
             if pad == True:
-                b = QuantumRegister(width1 + 1, name = name2 + "padded")
+                b = QuantumRegister(width2 + 1, name = name2 + " padded")
+                self.qc.add_register(b)
+                for i in range(width2):
+                    self.qc.cx(reg2[i], b[i])
+
+                # add(self.qc, a, b, width1)
             else:
                 b = var2.get_register()
             
@@ -65,7 +72,10 @@ class Arithmetic:
             a = var1.get_register()
             
             if pad == True:
-                b = QuantumRegister(width2+1,  name = name2 + "padded")
+                b = QuantumRegister(width2 + 1, name = name2 + " padded")
+                self.qc.add_register(b)
+                for i in range(width2):
+                    self.qc.cx(reg2[i], b[i])
             else:
                 b = var2.get_register()
                 
@@ -84,12 +94,10 @@ class Arithmetic:
         else:
             a = var1.get_register()
             if pad == True:
-                b = QuantumRegister(width1 + 1, name = name2 + "padded")
-                try:
-                    self.qc.add_register(b)
-                except:
-                    pass
-                add(self.qc, a, b, width2)
+                b = QuantumRegister(width2 + 1, name = name2 + " padded")
+                self.qc.add_register(b)
+                for i in range(width2):
+                    self.qc.cx(reg2[i], b[i])
                 
             else:
                 b = var2.get_register()
@@ -130,37 +138,76 @@ class Arithmetic:
         
         return a, b 
 
-        
+
     def power2(
         self,
         var1: Variable,
         name: str = "power2",
               ) -> QuantumCircuit:
         a = var1.get_register()
+        
         b_size = 2 ** a.size
+        var2 = Variable(b_size, "power2_b")
         b = QuantumRegister(b_size, "b")
+        var2.set_register(b)
+        
         try:
             self.qc.add_register(a)
+        except:
+            pass
+
+        try:
             self.qc.add_register(b)
         except:
             pass
         
-        qc.x(a[0])
-        qc.cx(a[0],b[0])
-        qc.x(a[0])
+        self.qc.x(a[0])
+        self.qc.cx(a[0],b[0])
+        self.qc.x(a[0])
 
         for i in range(a.size):
-            qc.cx(a[i],b[2**(i)])
+            self.qc.cx(a[i],b[2**(i)])
             for j in range(1,2**(i)):
-                qc.ccx(b[j], b[2**(i)], b[j + 2**(i)])
-                qc.cx(b[j + 2**(i)], b[j])
-                qc.cx(b[j + 2**(i)], b[2**(i)])
+                self.qc.ccx(b[j], b[2**(i)], b[j + 2**(i)])
+                self.qc.cx(b[j + 2**(i)], b[j])
+                self.qc.cx(b[j + 2**(i)], b[2**(i)])
 
 
         for i in range(1, b.size):
             if i % 2 ==0:
-                qc.cx(b[i],b[0])
+                self.qc.cx(b[i],b[0])
 
-    
+        return var1, var2
+
+    def mult(
+        self,
+        var1: Variable,
+        var2: Variable,
+        name: str = "multiplier",
+    ):
+        qc1 = var1.get_qc()
+        qc2 = var2.get_qc()
+        
+        reg1 = var1.get_register()
+        reg2 = var2.get_register()
+        
+        width1 = qc1.width()
+        width2 = qc2.width()
+
+        result_var = Variable(width1 + width2 + 1, "result_mult")
+        reg3 = result_var.get_register()
+        self.qc.add_register(reg3)
+
+        if width1 == 1:
+            for i in range(width2):
+                self.qc.ccx(reg1[0], reg2[i], reg3[i])
+            return var1, var2, result_var
+
+        elif width1 == 2:
+            for i in range(width2):
+                self.qc.ccx(reg1[1], reg2[i], reg3[i + 1])
+            cadd(self.qc, reg1[0], reg2, reg3, width2) # control to add them, the case can be generliazed into a larger width
+            return var1, var2, result_var
+
     def get_qc(self):
         return self.qc

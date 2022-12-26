@@ -30,7 +30,7 @@ class QuantumWalk:
         self.num_steps = num_steps
         self.distribution = distribution
         self.size = size
-        
+        self.loc_start = self.qc.width()
         self.vars = []
         self.registers = []
     
@@ -54,7 +54,7 @@ class QuantumWalk:
         else:
             self.distribution = distribution
         
-        loc_start = 0
+        loc_start = self.qc.width()
         
         for i in range(self.num_steps):
 
@@ -76,7 +76,7 @@ class QuantumWalk:
         self,
     )-> QuantumCircuit:
         size = self.size
-        loc_start = 0
+        loc_start = self.loc_start
         
         for i in range(self.num_steps - 1):
             arithmetic = Arithmetic()

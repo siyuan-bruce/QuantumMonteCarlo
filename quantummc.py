@@ -79,7 +79,7 @@ class QuantumMC:
         pad: bool = True,
     ):
         arithmetic = Arithmetic(self.qc)
-#        print(len(variables))
+        # print(len(variables))
 
         if operation == "add":
             a, b = arithmetic.add(variables[0], variables[1], pad)
@@ -95,7 +95,6 @@ class QuantumMC:
             self.qc = arithmetic.qc
             return a, b, c
             
-        
         self.qc = arithmetic.qc
         return a, b
         

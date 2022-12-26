@@ -33,7 +33,7 @@ class QuantumEstimation:
     ):
         self.var = var
 
-        num_uncertainty_qubits = var.num_qubits
+        num_uncertainty_qubits = self.var.num_qubits
 
         qregs = self.qc.qregs
 
@@ -95,16 +95,19 @@ class QuantumEstimation:
         
         # construct amplitude estimation
         
-        ae = IterativeAmplitudeEstimation(epsilon, alpha=alpha, quantum_instance=qi)
+        ae = IterativeAmplitudeEstimation(epsilon, alpha = alpha, quantum_instance = qi)
         
-#          
+
+        # The estimation process will transform the interval into the object interval.          
         import math
         result = ae.estimate(problem)
-    
-        if plain == True:
-            result = result * (2 ** self.var.num_qubits) / math.pi
         
-        return result.estimation_processed
+        if plain == True:
+            result = result.estimation * (2 ** self.var.num_qubits - 1) / math.pi
+        else:
+            result = result.estimation_processed * (2 ** self.var.num_qubits - 1)
+        
+        return result
 
     def get_qc(self):
         return self.qc
