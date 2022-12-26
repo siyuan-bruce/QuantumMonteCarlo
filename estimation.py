@@ -45,12 +45,15 @@ class QuantumEstimation:
             offsets = 0
             f_min = 0
             f_max = 1
+            c_approx = 0.25 #rescaling factor is important, need to explore which value is better
+            
             objective = LinearAmplitudeFunction(
                 num_uncertainty_qubits,
                 slopes,
                 offsets,
                 domain=(low, high),
-                image=(f_min, f_max)
+                image=(f_min, f_max),
+                rescaling_factor=c_approx,
             )
             
         self.objective = objective
