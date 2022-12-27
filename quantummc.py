@@ -61,13 +61,13 @@ class QuantumMC:
         alpha: float,
         var: Variable = None,
         objective: LinearAmplitudeFunction = None,
-        plain: bool = None,
     ):
         qe = QuantumEstimation(self.qc)
         qe.estimate(var, objective = objective)
-        if (objective == None) & (plain == None):
+        plain = False
+        if objective == None:
             plain = True
-        result = qe.calculate(epsilon,alpha, plain = plain)
+        result = qe.calculate(epsilon, alpha, plain)
         self.qc = qe.qc
         return result
     

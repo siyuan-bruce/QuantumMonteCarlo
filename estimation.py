@@ -39,6 +39,7 @@ class QuantumEstimation:
 
         #arithmetic expectation value
         if objective == None:
+            self.plain = True
             slopes = 1 
             low = 0
             high = 1
@@ -81,11 +82,10 @@ class QuantumEstimation:
         
     def calculate(
         self,
-        epsilon:float,
+        epsilon: float,
         alpha: float,
         plain: bool = False,
         ):
-        
         qregs = self.qc.qregs
         
         qi = QuantumInstance(Aer.get_backend("aer_simulator"), shots=100)
@@ -106,9 +106,10 @@ class QuantumEstimation:
         result = ae.estimate(problem)
         
         if plain == True:
-            result = result.estimation * (2 ** self.var.num_qubits - 1) / math.pi
-        else:
             result = result.estimation_processed * (2 ** self.var.num_qubits - 1)
+
+        else:
+            result = result.estimation_processed
         
         return result
 
