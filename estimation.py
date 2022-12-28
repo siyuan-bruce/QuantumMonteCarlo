@@ -88,7 +88,7 @@ class QuantumEstimation:
         ):
         qregs = self.qc.qregs
         
-        qi = QuantumInstance(Aer.get_backend("aer_simulator"), shots=100)
+        qi = QuantumInstance(Aer.get_backend("aer_simulator"), shots = 1000)
         problem = EstimationProblem(
             state_preparation=self.qc,
             objective_qubits=[self.qc.width() - qregs[-1].size],

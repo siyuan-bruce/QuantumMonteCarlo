@@ -83,6 +83,9 @@ class QuantumMC:
 
         if operation == "add":
             a, b = arithmetic.add(variables[0], variables[1], pad)
+
+        if operation == "sub":
+            a, b = arithmetic.sub(variables[0], variables[1])
             
         if operation == "square":
             a, b = arithmetic.add(variables[0])

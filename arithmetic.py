@@ -209,5 +209,53 @@ class Arithmetic:
             cadd(self.qc, reg1[0], reg2, reg3, width2) # control to add them, the case can be generliazed into a larger width
             return var1, var2, result_var
 
+
+    def sub(
+            self,
+            var1: Variable,
+            var2: Variable,
+            name: str = "Subtractor",
+        ) -> QuantumCircuit:
+            
+            qc1 = var1.get_qc()
+            qc2 = var2.get_qc()
+
+            reg1 = var1.get_register()
+            reg2 = var2.get_register()
+
+            name1 = reg1.name
+            name2 = reg2.name
+            
+            width1 = qc1.width()
+            width2 = qc2.width()
+
+            if width1 < width2:
+                raise QMCError("we now only support |a>|b> to |a-b>|b>")
+                
+                
+            a = var1.get_register()
+            a_padded = QuantumRegister(width1 + 1, name = name1 + " padded")
+            
+            try:
+                self.qc.add_register(a_padded)
+            except:
+                pass
+
+            for i in range(width1):
+                self.qc.cx(reg1[i], a_padded[i])
+
+            var1.set_register(a_padded)
+            var2.set_register(reg2)
+
+            try:
+                self.qc.add_register(reg2)
+            except:
+                pass
+
+            sub_swap(self.qc, a_padded, reg2, width1)
+            
+            return var1, var2
+
+
     def get_qc(self):
         return self.qc
