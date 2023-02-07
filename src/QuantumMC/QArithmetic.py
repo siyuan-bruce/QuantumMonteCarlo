@@ -1,6 +1,6 @@
 from math import pi
 from qiskit import QuantumRegister, QuantumCircuit, AncillaRegister
-from qft import qft, iqft, cqft, ciqft, ccu1
+from .qft import qft, iqft, cqft, ciqft, ccu1
 from qiskit.circuit.library import SXdgGate
 
 ################################################################################
