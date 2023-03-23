@@ -5,7 +5,6 @@ FinQMC is a quantum Monte Carlo framework tailored for business practitioners wh
 - A simple and intuitive interface that allows users to specify financial models using familiar mathematical notation.
 - Support for a wide range of probability distributions commonly used in financial modeling.
 - The ability to simulate complex financial scenarios with high accuracy using quantum Monte Carlo methods.
-- Integration with existing Python-based financial modeling libraries.
 
 ### Requirements
 - Python 3.7 or higher
