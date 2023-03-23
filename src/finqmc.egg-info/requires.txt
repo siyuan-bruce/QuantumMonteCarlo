@@ -1,0 +1,4 @@
+numpy
+scipy
+matplotlib
+qiskit==0.18.3qiskit_finance

@@ -51,7 +51,7 @@ class Arithmetic:
                 for i in range(width2):
                     self.qc.cx(reg2[i], b[i])
 
-                # add(self.qc, a, b, width1)
+            # add(self.qc, a, b, width1)
             else:
                 b = var2.get_register()
             
@@ -64,8 +64,7 @@ class Arithmetic:
                 self.qc.add_register(b)
             except:
                 pass
-#             self.qc = self.qc.compose(qc1, qubits = range(width1))
-#             self.qc = self.qc.compose(qc2, qubits = range(width1, width1 + width2))
+            
             add(self.qc, a, b, width1)
             
         elif width1 == width2:
