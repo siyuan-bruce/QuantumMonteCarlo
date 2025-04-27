@@ -3,6 +3,7 @@ from .variable import Variable
 from .estimation import QuantumEstimation
 from .arithmetic import Arithmetic
 from .quantumwalk import QuantumWalk
+import qiskit
 from qiskit import QuantumCircuit
 import numpy as np
 from typing import Tuple, Union, List, Optional, Any

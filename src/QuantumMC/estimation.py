@@ -2,8 +2,8 @@ from qiskit import *
 from .QArithmetic import add, sub, sub_swap
 import numpy as np
 
-from qiskit.utils import QuantumInstance
-from qiskit.algorithms import IterativeAmplitudeEstimation, EstimationProblem
+from qiskit_aer import AerSimulator
+from qiskit_algorithms import IterativeAmplitudeEstimation, EstimationProblem
 from qiskit.circuit.library import LinearAmplitudeFunction
 
 from .distribution import Distribution
@@ -11,6 +11,7 @@ from .error import QMCError
 from .variable import Variable
 from .arithmetic import Arithmetic
 
+from qiskit.primitives import Sampler
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -68,15 +69,12 @@ class QuantumEstimation:
         
         estimated_register = var.get_register()
         
-        for i in self.qc._qubits:
-            if i.register.name == estimated_register.name:
-                qubits.append(i)
-        
-        for i in self.qc._qubits:
-            if i.register.name == am.name:
-                qubits.append(i)
-                
-#         print("qubits:", len(qubits))
+        # Add qubits from estimated_register
+        for q in estimated_register:
+            qubits.append(self.qc.qubits.index(q))
+        # Add qubits from am
+        for q in am:
+            qubits.append(self.qc.qubits.index(q))
         
         self.qc = self.qc.compose(self.objective, qubits)
         
@@ -88,7 +86,7 @@ class QuantumEstimation:
         ):
         qregs = self.qc.qregs
         
-        qi = QuantumInstance(Aer.get_backend("aer_simulator"), shots = 1000)
+        simulator = AerSimulator()
         problem = EstimationProblem(
             state_preparation=self.qc,
             objective_qubits=[self.qc.width() - qregs[-1].size],
@@ -98,7 +96,7 @@ class QuantumEstimation:
         
         # construct amplitude estimation
         
-        ae = IterativeAmplitudeEstimation(epsilon, alpha = alpha, quantum_instance = qi)
+        ae = IterativeAmplitudeEstimation(epsilon, alpha = alpha)
         
 
         # The estimation process will transform the interval into the object interval.          

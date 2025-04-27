@@ -109,7 +109,7 @@ def add(circ, a, b, n):
         for j in range(i,0,-1):
             # If the qubit a[j-1] exists run cu1, if not assume the qubit is 0 and never existed
             if len(a) - 1 >= j - 1:
-                circ.cu1(2*pi/2**(i-j+1), a[j-1], b[i-1])
+                circ.cp(2*pi/2**(i-j+1), a[j-1], b[i-1])
 
     # Take the inverse QFT.
     iqft(circ, b, n)
@@ -353,7 +353,7 @@ def square(circ, a, b, n=-1):
                 if len(a) - 1 < j - 1:
                     pass # skip over non existent qubits
                 elif k == j - 1: # Cannot control twice
-                    circ.cu1(2*pi/2**(i-j+1), a[j-1], d[i-1])
+                    circ.cp(2*pi/2**(i-j+1), a[j-1], d[i-1])
                 else:
                     ccu1(circ, 2*pi/2**(i-j+1), a[k], a[j-1], d[i-1])
         

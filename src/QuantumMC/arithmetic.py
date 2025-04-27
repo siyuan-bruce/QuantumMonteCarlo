@@ -3,7 +3,7 @@ from qiskit import *
 from .QArithmetic import add, sub, sub_swap, cadd
 import numpy as np
 
-from qiskit.utils import QuantumInstance
+from qiskit_aer import AerSimulator
 from typing import Tuple, Union, List, Optional, Any
 from .distribution import Distribution
 from .error import QMCError

@@ -1,3 +1,9 @@
+# some_file.py
+import sys
+import os
+
+sys.path.append('src/')
+
 from qiskit import *
 import numpy as np
 

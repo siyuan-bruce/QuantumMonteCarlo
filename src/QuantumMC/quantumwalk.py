@@ -1,9 +1,8 @@
 from qiskit import *
-from .QArithmetic import add, sub, sub_swap
 import numpy as np
 
-from qiskit.utils import QuantumInstance
-from qiskit.algorithms import IterativeAmplitudeEstimation, EstimationProblem
+from qiskit_aer import AerSimulator
+from qiskit_algorithms import IterativeAmplitudeEstimation, EstimationProblem
 from qiskit.circuit.library import LinearAmplitudeFunction
 from qiskit_finance.circuit.library import UniformDistribution, LogNormalDistribution, NormalDistribution
 from typing import Tuple, Union, List, Optional, Any
