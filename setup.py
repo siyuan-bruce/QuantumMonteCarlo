@@ -17,8 +17,11 @@ setuptools.setup(
         'numpy',
         'scipy',
         'matplotlib',
-        'qiskit==0.18.3'
-        'qiskit_finance'
+        'qiskit',
+        'qiskit_finance',
+        'qiskit_aer',
+        'qiskit_optimization',
+        'qiskit-algorithms'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

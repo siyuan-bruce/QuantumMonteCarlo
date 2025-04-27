@@ -1,7 +1,15 @@
+# some_file.py
+import sys
+import os
+
+sys.path.append('src/')
+sys.path.append('../src/')
 
 from QuantumMC.quantummc import QuantumMC
 from QuantumMC.variable import Variable
+
 import numpy as np
+import qiskit
 
 # Create an instance of the QuantumMC class and assign it to the variable qmc
 qmc = QuantumMC()
