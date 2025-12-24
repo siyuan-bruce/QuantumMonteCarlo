@@ -49,6 +49,49 @@ qmc.add_variable(var2)
 a, b = qmc.arithmetic("add", [var1, var2])
 ```
 
+### Variable Definition and Distribution Loading
+The log-normal quantum distribution can be represented as:
+$$
+\ket{f(x)} = \sum_{i=0}^{2^{n}-1} \frac{1}{\sqrt{x_i \sigma \sqrt{2\pi}}} \exp\!\left(-\frac{(\log(x_i) - \mu)^2}{2\sigma^2}\right) \ket{x_i}
+$$
+where \(x_i\) is the \(i\)th value of the distribution and \(n\) is the number of qubits. The amplitude of the quantum state is the square root of its measurement probability.
+
+```python
+from QuantumMC.variable import Variable
+final_price = Variable(num_qubits, name="variable")
+final_price.load_distribution("LogNormal", num_uncertainty_qubits, mu=mu, sigma=sigma**2, bounds=(low, high))
+```
+The second line creates a distribution variable object called `final_price` with `num_uncertainty_qubits` qubits and a `variable` name. The third line loads a log-normal distribution onto the `final_price` variable with the specified parameters.
+
+### Quantum Arithmetic
+```python
+from QuantumMC.quantummc import QuantumMC
+from QuantumMC.variable import Variable
+qmc = QuantumMC()
+var1 = Variable(2, "var1")
+var1.load_constant(2)
+var2 = Variable(2, "var2")
+var2.load_constant(1)
+qmc.add_variable(var1)
+qmc.add_variable(var2)
+a, b = qmc.arithmetic("add", [var1, var2])
+```
+Lines 4–9 create two constant variables and add them to the `qmc` framework. Two qubits represent values up to 3, so the constant is set to 2. Line 10 performs the addition.
+
+### Quantum Walk
+```python
+qmc = QuantumMC()
+qw = qmc.walk(num_steps=1, distribution="Normal", size=1, name="r", mu=0.1, sigma=0.05)
+```
+The second line initializes the quantum walk object with the number of steps, distribution, and related parameters.
+
+### Quantum Estimation
+```python
+qmc = QuantumMC()
+result = qmc.estimate(0.05, 0.01, var)  # choose any variable to estimate
+```
+This starts the estimation technique on a chosen variable.
+
 ### Contribution Guidelines
 We welcome contributions to FinQMC from the community. If you would like to contribute to the project, please fork the repository and submit a pull request with your changes.
 
