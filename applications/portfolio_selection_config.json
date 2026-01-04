@@ -1,0 +1,89 @@
+{
+  "application": "portfolio_selection",
+  "description": "Portfolio optimization example with multiple quantum walks and arithmetic operations",
+  "encoding_precision": {
+    "uncertainty_qubits_per_walk": 1,
+    "constant_variable_qubits": 1,
+    "constant_value": 1,
+    "discretization_bounds": [0, 1]
+  },
+  "distribution_parameters": {
+    "walk1": {
+      "distribution_type": "Normal",
+      "mu": 0.5,
+      "sigma": 1.0,
+      "name": "r"
+    },
+    "walk2": {
+      "distribution_type": "Normal",
+      "mu": 0.5,
+      "sigma": 1.0,
+      "name": "xi"
+    }
+  },
+  "walk_configuration": {
+    "walk1": {
+      "num_steps": 1,
+      "state_space_size": 1,
+      "walk_name": "r"
+    },
+    "walk2": {
+      "num_steps": 1,
+      "state_space_size": 1,
+      "walk_name": "xi"
+    }
+  },
+  "amplitude_estimation": {
+    "used": true,
+    "target_accuracy_epsilon": 0.01,
+    "confidence_level_alpha": 0.01,
+    "iterations": "auto_selected",
+    "method": "IterativeAmplitudeEstimation",
+    "plain_estimation": true,
+    "default_c_approx": 0.1
+  },
+  "arithmetic_operations": {
+    "sequence": [
+      {
+        "operation": "add",
+        "operands": ["qw1.vars[-1]", "qw2.vars[-1]"],
+        "padding": true,
+        "result": "b"
+      },
+      {
+        "operation": "add",
+        "operands": ["var (constant=1)", "b"],
+        "padding": false,
+        "result": "b"
+      },
+      {
+        "operation": "power2",
+        "operands": ["b"],
+        "result": "b"
+      },
+      {
+        "operation": "sub",
+        "operands": ["b", "var"],
+        "result": "b"
+      },
+      {
+        "operation": "mult",
+        "operands": ["qw1.vars[0]", "b"],
+        "result": "c"
+      }
+    ],
+    "final_estimation_variable": "c"
+  },
+  "arithmetic_options": {
+    "padding_policy": "mixed (True for first add, False for second add)",
+    "operations": ["add", "power2", "sub", "mult"]
+  },
+  "execution_details": {
+    "backend": "AerSimulator (default)",
+    "simulator_version": "qiskit Aer",
+    "shot_count": "N/A (uses QAE)",
+    "measurement_type": "quantum_amplitude_estimation"
+  },
+  "notes": "This application demonstrates a complex sequence of arithmetic operations on quantum variables, ending with QAE estimation."
+}
+

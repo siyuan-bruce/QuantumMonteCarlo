@@ -1,0 +1,439 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Code listing style
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    showstringspaces=false
+}
+
+% Title information
+\title{FinQMC: A Quantum Monte Carlo Framework\\for Business Practitioners}
+\author{Project Documentation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+FinQMC is a quantum Monte Carlo framework tailored for business practitioners who want to explore the potential of quantum computing for financial modeling. The primary contribution of this research is to establish a user-friendly software tool that enables financial analysts to experiment with quantum Monte Carlo methods without needing to be experts in quantum computing or computer programming.
+
+\subsection{Features}
+
+\begin{itemize}
+    \item A simple and intuitive interface that allows users to specify financial models using familiar mathematical notation.
+    \item Support for a wide range of probability distributions commonly used in financial modeling.
+    \item The ability to simulate complex financial scenarios with high accuracy using quantum Monte Carlo methods.
+\end{itemize}
+
+\subsection{Requirements}
+
+\begin{itemize}
+    \item Python 3.7 or higher
+    \item NumPy, SciPy, and Matplotlib libraries
+    \item qiskit, a Python-based quantum computing library
+\end{itemize}
+
+\subsection{Package Versions}
+
+The following package versions have been tested and are recommended for this project. Most packages use the latest stable versions:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Package} & \textbf{Version} \\
+\midrule
+Python & 3.7+ (tested with 3.11) \\
+NumPy & 1.26.4 (latest) \\
+SciPy & 1.16.2 (latest) \\
+Matplotlib & 3.10.6 (latest) \\
+qiskit & 1.4.2 (latest) \\
+qiskit-finance & 0.4.1 (latest) \\
+qiskit-aer & 0.17.0 (latest) \\
+qiskit-optimization & 0.6.1 (latest) \\
+qiskit-algorithms & 0.3.1 (latest) \\
+\bottomrule
+\end{tabular}
+\caption{Recommended package versions for FinQMC}
+\label{tab:package_versions}
+\end{table}
+
+\noindent\textbf{Note:} These versions represent the latest stable releases at the time of documentation. The framework should work with newer versions, but compatibility is guaranteed for the versions listed above. To install the exact versions, use:
+
+\begin{lstlisting}[language=bash]
+pip install numpy==1.26.4 scipy==1.16.2 matplotlib==3.10.6
+pip install qiskit==1.4.2 qiskit-finance==0.4.1 qiskit-aer==0.17.0
+pip install qiskit-optimization==0.6.1 qiskit-algorithms==0.3.1
+\end{lstlisting}
+
+Or install all dependencies from the requirements file:
+
+\begin{lstlisting}[language=bash]
+pip install -r requirements.txt
+\end{lstlisting}
+
+\section{Getting Started}
+
+\subsection{Quick Start}
+
+The easiest way to get started is to run the main script:
+
+\begin{lstlisting}[language=bash]
+python main.py
+\end{lstlisting}
+
+This will automatically:
+\begin{itemize}
+    \item Check for required Python packages
+    \item Install any missing dependencies
+    \item Run all example applications
+    \item Display results and a summary
+\end{itemize}
+
+The script will execute all four example applications:
+\begin{enumerate}
+    \item \textbf{Quantum Walk} - Demonstrates quantum walk with direct measurement
+    \item \textbf{Option Pricing} - European call option pricing using quantum amplitude estimation
+    \item \textbf{Portfolio Selection} - Portfolio optimization with multiple quantum operations
+    \item \textbf{Distribution Addition} - Distribution addition example
+\end{enumerate}
+
+\section{Project Structure}
+
+The project has the following structure:
+
+\begin{verbatim}
+QuantumMonteCarlo/
+├── src/
+│   └── QuantumMC/              # Main source code package
+│       ├── __init__.py
+│       ├── quantummc.py        # Main QuantumMC class
+│       ├── variable.py         # Quantum Variable module
+│       ├── QArithmetic.py      # Quantum Arithmetic operations
+│       ├── arithmetic.py        # Arithmetic utilities
+│       ├── distribution.py      # Probability distributions
+│       ├── quantumwalk.py      # Quantum Walk module
+│       ├── estimation.py        # Quantum Estimation module
+│       ├── qft.py              # Quantum Fourier Transform
+│       └── error.py            # Error handling
+├── applications/               # Example applications
+│   ├── quantum_walk.py         # Quantum walk example
+│   ├── quantum_walk_config.json # Quantum walk hyperparameters
+│   ├── option_pricing.py       # European call option pricing
+│   ├── option_pricing_config.json # Option pricing hyperparameters
+│   ├── portfolio_selection.py  # Portfolio optimization example
+│   ├── portfolio_selection_config.json # Portfolio selection hyperparameters
+│   ├── distribution_addition.py # Distribution addition example
+│   └── distribution_addition_config.json # Distribution addition hyperparameters
+├── main.py                     # Main runner script (runs all applications)
+├── requirements.txt            # Python dependencies
+├── setup.py                    # Package setup script
+├── setup.cfg                   # Setup configuration
+├── pyproject.toml              # Project metadata
+├── LICENSE                     # License file
+└── README.md                   # This file
+\end{verbatim}
+
+\section{FinQMC Modules}
+
+The framework is composed of several modules that work together to provide a comprehensive suite of tools for quantum computing:
+
+\subsection{Quantum Variable}
+
+The Quantum Variable module allows users to define quantum variables and assign either constant or distribution-based values. This module provides a flexible and intuitive way to define the inputs for the QMC simulation.
+
+\subsection{Quantum Arithmetic}
+
+The Quantum Arithmetic module provides efficient operations between any two variables. This module enables business practitioners to perform complex calculations involving quantum variables, without needing a deep understanding of the underlying quantum mechanics.
+
+\subsection{Quantum Walk}
+
+The Quantum Walk module simplifies the sampling and accumulation process. This module enables users to efficiently simulate the QMC process, by handling the necessary steps involved in quantum walks.
+
+\subsection{Quantum Estimation}
+
+The Quantum Estimation module calculates expected values or the minimum values within a distribution. This module provides a reliable and accurate way to estimate the outcomes of QMC simulations, enabling users to make informed business decisions based on the results.
+
+\section{Installation}
+
+\subsection{Quick Start (Recommended)}
+
+Simply run the main script from the project root:
+
+\begin{lstlisting}[language=bash]
+python main.py
+\end{lstlisting}
+
+The script handles everything automatically - no manual installation needed!
+
+\subsection{Manual Installation}
+
+If you prefer to install dependencies manually:
+
+You can install the Quantum Monte Carlo Library using pip:
+
+\begin{lstlisting}[language=bash]
+pip install -r requirements.txt
+\end{lstlisting}
+
+Or install the package directly:
+
+\begin{lstlisting}[language=bash]
+pip install -e .
+\end{lstlisting}
+
+\section{Usage}
+
+\subsection{Running Applications}
+
+\textbf{Option 1: Run all applications at once (Recommended)}
+\begin{lstlisting}[language=bash]
+python main.py
+\end{lstlisting}
+
+\textbf{Option 2: Run individual applications}
+\begin{lstlisting}[language=bash]
+# From the project root directory
+python applications/quantum_walk.py
+python applications/option_pricing.py
+python applications/portfolio_selection.py
+python applications/distribution_addition.py
+\end{lstlisting}
+
+\subsection{Code Examples}
+
+\subsubsection{Basic Addition Example}
+
+Here is an example of how to use the Quantum Monte Carlo Library to do addition using a quantum circuit:
+
+\begin{lstlisting}
+from QuantumMC.quantummc import QuantumMC
+from QuantumMC.variable import Variable
+qmc = QuantumMC()
+
+# Define two quantum variables with constant values
+var1 = Variable(2, "var1")
+var1.load_constant(2)
+var2 = Variable(2, "var2")
+var2.load_constant(1)
+qmc.add_variable(var1)
+qmc.add_variable(var2)
+
+# Add the two variables using QuantumArithmetic module
+a, b = qmc.arithmetic("add", [var1, var2])
+\end{lstlisting}
+
+\subsubsection{Variable Definition and Distribution Loading}
+
+The log-normal quantum distribution can be represented as:
+\begin{equation}
+\ket{f(x)} = \sum_{i=0}^{2^{n}-1} \frac{1}{\sqrt{x_i \sigma \sqrt{2\pi}}} \exp\left(-\frac{(\log(x_i) - \mu)^2}{2\sigma^2}\right) \ket{x_i}
+\end{equation}
+where $x_i$ is the $i$th value of the distribution and $n$ is the number of qubits. The amplitude of the quantum state is the square root of its measurement probability.
+
+\begin{lstlisting}
+from QuantumMC.variable import Variable
+final_price = Variable(num_qubits, name="variable")
+final_price.load_distribution("LogNormal", num_uncertainty_qubits, 
+                              mu=mu, sigma=sigma**2, bounds=(low, high))
+\end{lstlisting}
+
+The second line creates a distribution variable object called \texttt{final\_price} with \texttt{num\_uncertainty\_qubits} qubits and a \texttt{variable} name. The third line loads a log-normal distribution onto the \texttt{final\_price} variable with the specified parameters.
+
+\subsubsection{Quantum Arithmetic}
+
+\begin{lstlisting}
+from QuantumMC.quantummc import QuantumMC
+from QuantumMC.variable import Variable
+qmc = QuantumMC()
+var1 = Variable(2, "var1")
+var1.load_constant(2)
+var2 = Variable(2, "var2")
+var2.load_constant(1)
+qmc.add_variable(var1)
+qmc.add_variable(var2)
+a, b = qmc.arithmetic("add", [var1, var2])
+\end{lstlisting}
+
+Lines 4--9 create two constant variables and add them to the \texttt{qmc} framework. Two qubits represent values up to 3, so the constant is set to 2. Line 10 performs the addition.
+
+\subsubsection{Quantum Walk}
+
+\begin{lstlisting}
+qmc = QuantumMC()
+qw = qmc.walk(num_steps=1, distribution="Normal", size=1, 
+              name="r", mu=0.1, sigma=0.05)
+\end{lstlisting}
+
+The second line initializes the quantum walk object with the number of steps, distribution, and related parameters.
+
+\subsubsection{Quantum Estimation}
+
+\begin{lstlisting}
+qmc = QuantumMC()
+result = qmc.estimate(0.05, 0.01, var)  # choose any variable to estimate
+\end{lstlisting}
+
+This starts the estimation technique on a chosen variable.
+
+\section{Hyperparameter Reporting}
+
+This section provides detailed hyperparameter settings for each application/case study to ensure reproducibility. Configuration files for each application are available in the \texttt{applications/} directory.
+
+\subsection{Hyperparameter Settings by Application}
+
+\begin{longtable}{p{3cm}p{2.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+\toprule
+\textbf{Parameter Category} & \textbf{Quantum Walk} & \textbf{Option Pricing} & \textbf{Portfolio Selection} & \textbf{Distribution Addition} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter Category} & \textbf{Quantum Walk} & \textbf{Option Pricing} & \textbf{Portfolio Selection} & \textbf{Distribution Addition} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+
+\textbf{Encoding/Precision} & & & & \\
+Uncertainty qubits per variable & 1 (per step) & 3 & 1 (per walk step) & 1 (per step) \\
+Total qubits (final variable) & 3 & 3 & Variable (depends on operations) & 3 \\
+Discretization bounds & (0, 1) & (low, high)$^1$ & (0, 1) & (0, 1) \\
+\midrule
+
+\textbf{Distribution Parameters} & & & & \\
+Distribution type & Normal & LogNormal & Normal (2 walks) & Normal \\
+$\mu$ (mean) & 0.5 & 0.6899$^2$ & 0.5 (both) & 0.5 \\
+$\sigma$ (std dev) & 1.0 & 0.1324$^2$ & 1.0 (both) & 1.0 \\
+\midrule
+
+\textbf{Path/Walk Configuration} & & & & \\
+Number of steps & 3 & N/A & 1 (per walk) & 3 \\
+State space size & 1 & N/A & 1 & 1 \\
+Walk name & "r" & N/A & "r", "xi" & "r" \\
+\midrule
+
+\textbf{Amplitude Estimation (QAE)} & & & & \\
+Target accuracy ($\epsilon$) & N/A & 0.05 & 0.01 & N/A \\
+Confidence level ($\alpha$) & N/A & 0.01 & 0.01 & N/A \\
+Iterations/repetitions & Auto-selected & Auto-selected & Auto-selected & N/A \\
+\midrule
+
+\textbf{Arithmetic/Register Options} & & & & \\
+Padding policy & N/A & Default (True) & Mixed$^3$ & N/A \\
+Operations performed & N/A & N/A & add, power2, sub, mult & N/A \\
+\midrule
+
+\textbf{Objective Function (if applicable)} & & & & \\
+Rescaling factor (c\_approx) & N/A & 0.25 & N/A$^4$ & N/A \\
+Breakpoints & N/A & [low, strike\_price] & N/A & N/A \\
+Domain & N/A & (low, high) & N/A & N/A \\
+Image & N/A & (0, high - strike\_price) & N/A & N/A \\
+\midrule
+
+\textbf{Execution Details} & & & & \\
+Backend/Simulator & qasm\_simulator & AerSimulator (default) & N/A & qasm\_simulator \\
+Shot count & 1000 & N/A (QAE) & N/A (QAE) & 1000 \\
+Measurement & Direct & QAE & QAE & Direct \\
+
+\end{longtable}
+
+\noindent\textbf{Footnotes:}
+\begin{enumerate}
+    \item For option pricing: $\text{low} = \max(0, \text{mean} - 3 \times \text{stddev})$, $\text{high} = \text{mean} + 3 \times \text{stddev}$, where $\text{mean} = 2.0110$, $\text{stddev} = 0.2675$, resulting in $\text{low} = 1.2086$, $\text{high} = 2.8134$.
+    \item Calculated from: S=2.0, vol=0.4, r=0.05, T=40/365. Note: \texttt{load\_distribution} uses $\sigma^2$ (variance) as the sigma parameter, so $\sigma^2 = 0.0175$.
+    \item Portfolio selection uses \texttt{pad=False} for one addition operation, \texttt{pad=True} (default) for others.
+    \item Portfolio selection uses default plain estimation with c\_approx=0.1 (internal default).
+\end{enumerate}
+
+\subsection{Additional Details}
+
+\subsubsection{Option Pricing Application}
+\begin{itemize}
+    \item Initial spot price (S): 2.0
+    \item Volatility (vol): 0.4 (40\%)
+    \item Annual interest rate (r): 0.05 (5\%)
+    \item Time to maturity (T): 40/365 days
+    \item Strike price: 1.896
+    \item Distribution parameters: $\mu = (r - 0.5 \times \text{vol}^2) \times T + \ln(S)$, $\sigma = \text{vol} \times \sqrt{T}$
+\end{itemize}
+
+\subsubsection{Portfolio Selection Application}
+\begin{itemize}
+    \item Constant variable: 1 qubit, value = 1
+    \item Operations sequence: add (pad=True) $\to$ add (pad=False) $\to$ power2 $\to$ sub $\to$ mult
+    \item Final estimation on result of multiplication
+\end{itemize}
+
+\subsubsection{Quantum Walk \& Distribution Addition Applications}
+\begin{itemize}
+    \item Both use direct measurement (no QAE)
+    \item Results obtained via classical post-processing of measurement counts
+\end{itemize}
+
+\subsection{Configuration Files}
+
+Each application has a corresponding configuration file in the \texttt{applications/} directory:
+\begin{itemize}
+    \item \texttt{quantum\_walk\_config.json} - Quantum walk hyperparameters
+    \item \texttt{option\_pricing\_config.json} - Option pricing hyperparameters
+    \item \texttt{portfolio\_selection\_config.json} - Portfolio selection hyperparameters
+    \item \texttt{distribution\_addition\_config.json} - Distribution addition hyperparameters
+\end{itemize}
+
+\section{Version Information}
+
+\subsection{Software Versions}
+
+The project has been tested with the following software versions:
+
+\begin{itemize}
+    \item \textbf{Python}: 3.7+ (tested with 3.11)
+    \item \textbf{Backend}: qiskit Aer (qasm\_simulator or AerSimulator)
+    \item \textbf{Operating System}: OS Independent (tested on macOS, Linux, Windows)
+\end{itemize}
+
+\subsection{Package Dependencies}
+
+All package dependencies and their versions are listed in Table~\ref{tab:package_versions}. The main runner script (\texttt{main.py}) will automatically check for and install the required packages if they are missing.
+
+\section{Contribution Guidelines}
+
+We welcome contributions to FinQMC from the community. If you would like to contribute to the project, please fork the repository and submit a pull request with your changes.
+
+\section{License}
+
+This software is released under the MIT License. See LICENSE.txt for details.
+
+\end{document}
+

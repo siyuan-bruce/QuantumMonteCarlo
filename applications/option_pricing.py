@@ -2,6 +2,11 @@
 This module is following the work from Rebentrostet al. 2018, Stamatopoulos et al. 2020.
 '''
 
+import sys 
+
+sys.path.append('src/')
+sys.path.append('../src/')
+
 from QuantumMC.quantummc import QuantumMC
 from QuantumMC.variable import Variable
 import numpy as np

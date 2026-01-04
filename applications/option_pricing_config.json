@@ -1,0 +1,71 @@
+{
+  "application": "option_pricing",
+  "description": "European call option pricing using quantum amplitude estimation",
+  "encoding_precision": {
+    "uncertainty_qubits": 3,
+    "discretization_bounds": {
+      "low": "max(0, mean - 3*stddev)",
+      "high": "mean + 3*stddev",
+      "calculation": {
+        "mean": 2.0110,
+        "stddev": 0.2675,
+        "low": 1.2086,
+        "high": 2.8134,
+        "formula_low": "max(0, mean - 3*stddev)",
+        "formula_high": "mean + 3*stddev"
+      }
+    }
+  },
+  "distribution_parameters": {
+    "distribution_type": "LogNormal",
+    "financial_parameters": {
+      "initial_spot_price_S": 2.0,
+      "volatility_vol": 0.4,
+      "annual_interest_rate_r": 0.05,
+      "time_to_maturity_T_days": 40,
+      "time_to_maturity_T_years": 0.1096
+    },
+    "calculated_parameters": {
+      "mu": 0.6899,
+      "sigma": 0.1324,
+      "sigma_squared_for_distribution": 0.0175,
+      "formula_mu": "(r - 0.5*vol^2)*T + ln(S)",
+      "formula_sigma": "vol*sqrt(T)",
+      "note": "load_distribution uses sigma^2 (variance) as the sigma parameter"
+    }
+  },
+  "walk_configuration": {
+    "used": false
+  },
+  "amplitude_estimation": {
+    "used": true,
+    "target_accuracy_epsilon": 0.05,
+    "confidence_level_alpha": 0.01,
+    "iterations": "auto_selected",
+    "method": "IterativeAmplitudeEstimation"
+  },
+  "objective_function": {
+    "type": "LinearAmplitudeFunction",
+    "strike_price": 1.896,
+    "rescaling_factor_c_approx": 0.25,
+    "breakpoints": ["low", "strike_price"],
+    "slopes": [0, 1],
+    "offsets": [0, 0],
+    "domain": ["low", "high"],
+    "image": [0, "high - strike_price"],
+    "f_min": 0,
+    "f_max": "high - strike_price"
+  },
+  "arithmetic_options": {
+    "padding_policy": "default (True)",
+    "operations": []
+  },
+  "execution_details": {
+    "backend": "AerSimulator",
+    "simulator_version": "qiskit Aer",
+    "shot_count": "N/A (uses QAE)",
+    "measurement_type": "quantum_amplitude_estimation"
+  },
+  "notes": "This application follows the work from Rebentrost et al. 2018, Stamatopoulos et al. 2020. Uses QAE for expectation value estimation."
+}
+

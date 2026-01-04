@@ -1,0 +1,9 @@
+numpy==1.26.4
+scipy==1.16.2
+matplotlib==3.10.6
+qiskit==1.4.2
+qiskit-finance==0.4.1
+qiskit-aer==0.17.0
+qiskit-optimization==0.6.1
+qiskit-algorithms==0.3.1
+

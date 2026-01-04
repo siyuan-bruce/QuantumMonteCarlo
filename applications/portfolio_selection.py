@@ -1,6 +1,4 @@
-# some_file.py
-import sys
-import os
+import sys 
 
 sys.path.append('src/')
 sys.path.append('../src/')
