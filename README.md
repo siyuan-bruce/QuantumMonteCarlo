@@ -221,45 +221,38 @@ This section provides detailed hyperparameter settings for each application/case
 
 ### Table: Hyperparameter Settings by Application
 
-| Parameter Category | Quantum Walk | Option Pricing | Portfolio Selection | Distribution Addition |
-|-------------------|--------------|----------------|---------------------|----------------------|
-| **Encoding/Precision** |
-| Uncertainty qubits per variable | 1 (per step) | 3 | 1 (per walk step) | 1 (per step) |
-| Total qubits (final variable) | 3 | 3 | Variable (depends on operations) | 3 |
-| Discretization bounds | (0, 1) | (low, high)<sup>1</sup> | (0, 1) | (0, 1) |
-| **Distribution Parameters** |
-| Distribution type | Normal | LogNormal | Normal (2 walks) | Normal |
-| μ (mean) | 0.5 | 0.6899<sup>2</sup> | 0.5 (both) | 0.5 |
-| σ (std dev) | 1.0 | 0.1324<sup>2</sup> | 1.0 (both) | 1.0 |
-| **Path/Walk Configuration** |
-| Number of steps | 3 | N/A | 1 (per walk) | 3 |
-| State space size | 1 | N/A | 1 | 1 |
-| Walk name | "r" | N/A | "r", "xi" | "r" |
-| **Amplitude Estimation (QAE)** |
-| Target accuracy (ε) | N/A | 0.05 | 0.01 | N/A |
-| Confidence level (α) | N/A | 0.01 | 0.01 | N/A |
-| Iterations/repetitions | Auto-selected | Auto-selected | Auto-selected | N/A |
-| **Arithmetic/Register Options** |
-| Padding policy | N/A | Default (True) | Mixed<sup>3</sup> | N/A |
-| Operations performed | N/A | N/A | add, power2, sub, mult | N/A |
-| **Objective Function (if applicable)** |
-| Rescaling factor (c_approx) | N/A | 0.25 | N/A<sup>4</sup> | N/A |
-| Breakpoints | N/A | [low, strike_price] | N/A | N/A |
-| Domain | N/A | (low, high) | N/A | N/A |
-| Image | N/A | (0, high - strike_price) | N/A | N/A |
-| **Execution Details** |
-| Backend/Simulator | qasm_simulator | AerSimulator (default) | N/A | qasm_simulator |
-| Shot count | 1000 | N/A (QAE) | N/A (QAE) | 1000 |
-| Measurement | Direct | QAE | QAE | Direct |
+| Parameter Category         | Distribution Addition | Quantum Walk | Portfolio Selection |
+|---------------------------|----------------------|--------------|---------------------|
+| **Encoding/Precision**    |                      |              |                     |
+| Uncertainty qubits per variable | 1 (per step)         | 1 (per step)   | 1 (per walk step)    |
+| Total qubits (final variable)   | 3                    | 3            | Variable (depends on operations) |
+| Discretization bounds     | (0, 1)               | (0, 1)       | (0, 1)              |
+| **Distribution Parameters**     |                      |              |                     |
+| Distribution type         | Normal               | Normal       | Normal (2 walks)     |
+| μ (mean)                  | 0.5                  | 0.5          | 0.5 (both)           |
+| σ (std dev)               | 1.0                  | 1.0          | 1.0 (both)           |
+| **Path/Walk Configuration**     |                  |              |                     |
+| Number of steps           | 3                    | 3            | 1 (per walk)         |
+| State space size          | 1                    | 1            | 1                    |
+| Walk name                 | "r"                  | "r"          | "r", "xi"            |
+| **Amplitude Estimation (QAE)**  |                  |              |                     |
+| Target accuracy (ε)       | N/A                  | N/A          | 0.01                 |
+| Confidence level (α)      | N/A                  | N/A          | 0.01                 |
+| Iterations/repetitions    | N/A                  | N/A          | Auto-selected        |
+| **Arithmetic/Register Options** |              |              |                     |
+| Padding policy            | N/A                  | N/A          | Mixed<sup>3</sup>    |
+| Operations performed      | N/A                  | N/A          | add, power2, sub, mult |
+| **Objective Function (if applicable)** |       |              |                     |
+| Rescaling factor (c_approx)    | N/A              | N/A          | N/A<sup>4</sup>      |
+| Image                     | Yes                  | Yes          | Yes                  |
+| **Execution Details**           |                  |              |                     |
+| Backend/Simulator         | qasm_simulator       | qasm_simulator | AerSimulator         |
+| Shot count                | 1000                 | 1000         | 1000                 |
 
-<sup>1</sup> For option pricing: `low = max(0, mean - 3*stddev)`, `high = mean + 3*stddev`, where `mean = 2.0110`, `stddev = 0.2675`, resulting in `low = 1.2086`, `high = 2.8134`  
-<sup>2</sup> Calculated from: S=2.0, vol=0.4, r=0.05, T=40/365. Note: `load_distribution` uses σ² (variance) as the sigma parameter, so σ² = 0.0175  
-<sup>3</sup> Portfolio selection uses `pad=False` for one addition operation, `pad=True` (default) for others  
-<sup>4</sup> Portfolio selection uses default plain estimation with c_approx=0.1 (internal default)
 
 ### Additional Details
 
-**Option Pricing Application:**
+**Option Pricing Application (Following Rebentrost et al. 2024):**
 - Initial spot price (S): 2.0
 - Volatility (vol): 0.4 (40%)
 - Annual interest rate (r): 0.05 (5%)
